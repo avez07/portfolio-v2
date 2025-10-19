@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib';
 import './App.css'
 import SenceOne from './pages/sence1'
+RectAreaLightUniformsLib.init()
 
 function App() {
   const [count, setCount] = useState(0)

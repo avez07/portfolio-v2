@@ -6,7 +6,7 @@ import * as THREE from 'three'
 
 const CameraControl = () => {
     const cameraRef = useRef()
-    const [position, setPosition] = useState(new THREE.Vector3(0, 2.5, 50))
+    const [position, setPosition] = useState(new THREE.Vector3(0, 0.5, 50))
     const [rotationY, setRotationY] = useState(0)
 
     const handleKeyDown = (e) => {
@@ -15,8 +15,8 @@ const CameraControl = () => {
 
         setRotationY((prev) => {
             //  if (e.key === "ArrowUp" || e.key === "ArrowDown") return 0;
-            if (e.key === 'ArrowLeft') return prev + rotationSpeed
-            if (e.key === 'ArrowRight') return prev - rotationSpeed
+            if (e.key === 'ArrowLeft') return Math.min(prev + rotationSpeed,Math.PI/2)
+            if (e.key === 'ArrowRight') return Math.max(prev - rotationSpeed,-Math.PI/2)
             return prev
 
         })
@@ -27,8 +27,11 @@ const CameraControl = () => {
             // direction based on current rotation
             // const dir = new THREE.Vector3(Math.sin(rotationY), 0, (Math.cos(rotationY)));
             // if (e.key === "ArrowUp" || e.key === "ArrowDown") setRotationY(0)
-            if (e.key === "ArrowUp") newPos.z = Math.max(newPos.z - moveSpeed, 5)
+            if (e.key === "ArrowUp")  newPos.z = Math.max(newPos.z - moveSpeed, 5)
+
+            
             if (e.key === "ArrowDown") newPos.z = Math.min(newPos.z + moveSpeed, 50)
+            
 
             return newPos;
         });
@@ -43,13 +46,13 @@ const CameraControl = () => {
         if (cameraRef.current) {
             cameraRef.current.position.lerp(position, 0.1);
             cameraRef.current.rotation.y += rotationY
-            cameraRef.current.rotation.z += rotationY * 0.06
+            cameraRef.current.rotation.z += rotationY * 0.01
 
         }
         
     });
 
-    return <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 2.5, 50]}  far={1000}/>;
+    return <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 0.5, 50]} near={0.01}  far={100}/>;
 }
 
 export default CameraControl

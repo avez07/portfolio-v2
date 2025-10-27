@@ -18,7 +18,7 @@ const Corridor = () => {
     // let it cover the floor exactly
 
     return (
-        <group>
+        <group position={[0,-2,0]}>
             {/* floor */}
             <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[15, 110]} />
@@ -30,7 +30,7 @@ const Corridor = () => {
             </mesh>
             {/* ceilling */}
             <mesh position={[0, 5, 0]} rotation={[Math.PI / 2, 0, 0]} >
-                <planeGeometry args={[15, 100]} />
+                <planeGeometry args={[15, 110]} />
                 <meshStandardMaterial map={FloorTextures()}  />
             </mesh>
             {Array.from({ length: 8 }, (_, index) => (

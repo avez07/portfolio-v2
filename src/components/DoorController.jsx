@@ -3,24 +3,27 @@ import * as THREE from 'three'
 import DoorTexture from './textures/DoorTexture';
 import { useFrame, useLoader } from '@react-three/fiber';
 import gsap from 'gsap'
+import { Text } from '@react-three/drei';
 
 const doors = [
-    { name: "Cybersecurity", side: "right", posZ: 5 },
-    { name: "Databases", side: "left", posZ: 10 },
-    { name: "Backend", side: "right", posZ: 15 },
-    { name: "Frontend", side: "left", posZ: 20 },
-    { name: "DevOps", side: "right", posZ: 25 },
-    { name: "About Me", side: "left", posZ: 30 },
+    { name: "Animation", side: "right", posZ: 5 },
+    { name: "Cybersecurity", side: "left", posZ: 10 },
+    { name: "Databases", side: "right", posZ: 15 },
+    { name: "Backend", side: "left", posZ: 20 },
+    { name: "Frontend", side: "right", posZ: 25 },
+    { name: "DevOps", side: "left", posZ: 30 },
 ];
 const DoorMesh = ({ name, posZ, posX }) => {
     const meshRef = useRef();
     const [open, setOpen] = useState(false);
-    // Base rotation for door alignment
-    const baseRotation = posX < 0 ? Math.PI / 2 : -Math.PI/2
-    const openRotation =
-        baseRotation + (posX < 0 ? -Math.PI / 2 : -Math.PI/2)
 
-    const hingeOffsetX = posX < 0 ? -2 / 2 : 2 / 2
+    const baseFontSize = 0.2;
+const adjustedFontSize = Math.min(baseFontSize, 1 / name.length * 2); // tweak factor
+    // Base rotation for door alignment
+    const baseRotation = posX < 0 ? Math.PI / 2 : -Math.PI / 2
+    const openRotation =
+        baseRotation + (posX < 0 ? -Math.PI / 2 : -Math.PI / 2)
+
     useEffect(() => {
         if (!meshRef.current) return
 
@@ -46,8 +49,8 @@ const DoorMesh = ({ name, posZ, posX }) => {
                 <meshPhysicalMaterial color={new THREE.Color('rgba(174, 81, 38, 1)')} clearcoat={1} />
             </mesh>
 
-            <group ref={meshRef} position={[0, 0 , posX < 0 ? 1 : -1]} rotation={[0, posX < 0 ? Math.PI / 2 : -Math.PI / 2, 0]} onClick={() => setOpen(!open)}>
-            <axesHelper args={[6]} />
+            <group ref={meshRef} position={[0, 0, posX < 0 ? 1 : -1]} rotation={[0, posX < 0 ? Math.PI / 2 : -Math.PI / 2, 0]} onClick={() => setOpen(!open)}>
+                <axesHelper args={[6]} />
                 <mesh position={[1, 0, 0]} geometry={DoorTexture()} >
                     {/* <boxGeometry args={[2, 4, 0.2]} /> */}
                     <meshPhysicalMaterial color={new THREE.Color('rgba(174, 81, 38, 1)')} clearcoat={1} />
@@ -63,7 +66,23 @@ const DoorMesh = ({ name, posZ, posX }) => {
                 </mesh>
             </group>
 
-            {/* <DoorTexture/> */}
+            <group>
+                <mesh position={[posX < 0 ? 0.19 : -0.19, 1.9, -1.5]} >
+                    <planeGeometry args={[2.3, 0.4, 1]} />
+                    <meshPhysicalMaterial color={new THREE.Color('rgba(255, 255, 255, 1)')} clearcoat={0.4} roughness={1} metalness={0.2} side={THREE.DoubleSide}/>
+                    
+                    <Text
+                    position={[posX<0 ?0.12: -0.15,0,0.01]}
+                    fontSize={adjustedFontSize}
+                    fontWeight={600}
+                    animations={1}
+                    maxWidth={0.7}
+                        color={'#000'}
+                        anchorX={posX < 0 ?"left": "right"}
+                        anchorY="middle"
+                    >{name}</Text>
+                </mesh>
+            </group>
         </group>
 
     );

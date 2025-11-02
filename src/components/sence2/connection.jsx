@@ -1,47 +1,48 @@
-import React, { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-function Connection({ start, end, speed = 0.1 }) {
+export default function Connection({ start, end, speed = 0.5, color = "#00ffff" }) {
   const pointRef = useRef();
 
-  // Direction vector and distance
-  const dir = new THREE.Vector3(...end).sub(new THREE.Vector3(...start));
+  const startVec = new THREE.Vector3(...start);
+  const endVec = new THREE.Vector3(...end);
+  const dir = endVec.clone().sub(startVec);
   const distance = dir.length();
   dir.normalize();
-
-  // Single moving point along the line
-  const pointPosition = new THREE.Vector3(...start);
+  console.log('dir',dir)
 
   useFrame(({ clock }) => {
-    const t = (clock.getElapsedTime() * speed) % 1; // loop 0 → 1
-    pointPosition.copy(new THREE.Vector3(...start)).add(dir.clone().multiplyScalar(distance * t));
-    pointRef.current.position.set(pointPosition.x, pointPosition.y, pointPosition.z);
+    const t = (clock.getElapsedTime() * speed) % 1;
+    const point = startVec.clone().add(dir.clone().multiplyScalar(distance * t));
+    pointRef.current.position.copy(point);
   });
 
   return (
     <>
-      {/* Solid connection line */}
+      {/* Solid line */}
       <line>
-        <bufferGeometry
-          attach="geometry"
-          >
+        <bufferGeometry>
           <bufferAttribute
-            attachObject={['attributes', 'position']}
+            attach={"attributes-position"}
             array={new Float32Array([...start, ...end])}
             count={2}
             itemSize={3}
           />
         </bufferGeometry>
-        <lineBasicMaterial color="#ffae00ff" linewidth={2} />
+        <lineBasicMaterial color={color} linewidth={2} />
       </line>
 
-      {/* Moving glowing point */}
+      {/* Moving glowing dot */}
       <mesh ref={pointRef}>
-        <sphereGeometry args={[0.05, 16, 16]} />
-        <meshStandardMaterial emissive="#ffae00ff" emissiveIntensity={2} color="#ffae00ff" />
+        <sphereGeometry args={[0.015, 16, 16]} />
+        <meshStandardMaterial
+          color='#ffae00'
+          emissive='#ffae00'
+          emissiveIntensity={6}
+          toneMapped={false}
+        />
       </mesh>
     </>
   );
 }
-export default Connection

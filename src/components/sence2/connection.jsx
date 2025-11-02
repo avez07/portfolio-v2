@@ -10,7 +10,6 @@ export default function Connection({ start, end, speed = 0.5, color = "#00ffff" 
   const dir = endVec.clone().sub(startVec);
   const distance = dir.length();
   dir.normalize();
-  console.log('dir',dir)
 
   useFrame(({ clock }) => {
     const t = (clock.getElapsedTime() * speed) % 1;
@@ -35,11 +34,11 @@ export default function Connection({ start, end, speed = 0.5, color = "#00ffff" 
 
       {/* Moving glowing dot */}
       <mesh ref={pointRef}>
-        <sphereGeometry args={[0.015, 16, 16]} />
+        <sphereGeometry args={[0.03, 16, 16]} />
         <meshStandardMaterial
           color='#ffae00'
           emissive='#ffae00'
-          emissiveIntensity={6}
+          emissiveIntensity={10}
           toneMapped={false}
         />
       </mesh>

@@ -8,9 +8,9 @@ const  CitySurface = () => {
     <group>
       {/* Base disk */}
       <mesh ref={ref}>
-        <cylinderGeometry args={[10, 10,0.1]} />
+        <cylinderGeometry args={[11, 11,0.1,100]} />
         <meshPhysicalMaterial
-          color="#f1f50bff"
+          color="#abe278ff"
           roughness={0.4}
           metalness={0.8}
           clearcoat={1}

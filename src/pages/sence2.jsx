@@ -9,53 +9,63 @@ import Crystal from "../components/sence2/user";
 import CurvedConnection from "../components/sence2/curveLine";
 import ServerCity from "../components/sence2/serverCity";
 import CitySurface from "../components/sence2/senceBase";
+import GlowingCube from "../components/sence2/serverCity/container";
+import LoadBalancer from "../components/sence2/serverCity/Loadbalancer";
+import Database from "../components/sence2/serverCity/Database";
 
 
 
 
+const RotatingSence = ()=>{
 
+  const senceRef = useRef()
 
-
-export default function DevopsSence() {
+  useFrame(() => {
+    if (senceRef.current) {
+      // Rotate on the y-axis
+      senceRef.current.rotation.y -= 0.0015;
+    }
+  });
   return (
-    <Canvas
-      gl={{ antialias: true }}
-      camera={{ position: [0, 0, 5], fov: 100 }}
-    >
-      <color attach="background" args={["#060c41"]} />
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[1, 1, 1]} intensity={1} />
+ <group ref={senceRef} position={[0, -2, -3]} rotation={[0, 0, 0]}>
 
-      <group position={[0, -2, -3]} rotation={[0, 0, 0]}>
-
-        {/* <Crystal />
+        <Crystal />
         <Connection
-          start={[-3, 0.5, 9.5]}     
-          end={[-1.5, 0.5, 9.5]}        
+          start={[-3, 0.5, 9.2]}     
+          end={[-1.5, 0.5, 9.2]}        
           speed={0.9}            
         />
         <DNSServer />
         <Connection
-          start={[-1.5, 0.5, 9.5]}     
-          end={[0, 0.5, 5.3]}        
+          start={[-1.5, 0.5, 9.2]}     
+          end={[0, 0.3, 5.3]}        
           speed={0.9}            
-        /> */}
-        {/* <ServerCity /> */}
-
-        {/* <CitySurface /> */}
+        />
+        <ServerCity /> 
+      <CitySurface />
       </group>
+  )
+}
 
-      {/* <CurvedConnection
-        start={[-1, -1, -0.5]}      // Crystal position
-        end={[1, 1, 1.5]}        // DNS Server position
-        controlPoint={[3,-3,0]}             // How fast the points move
-      /> */}
 
-      {/* Bloom for glowing effect */}
+export default function DevopsSence() {
+ 
+  return (
+    <Canvas
+      gl={{ antialias: true }}
+      camera={{ position: [0, 0.5, 9.5], fov: 100 }}
+    >
+      <color attach="background" args={["#04082b"]} />
+      <ambientLight intensity={0.5} />
+      <spotLight position={[1, 15, 1]} intensity={1} />
+
+     
+<RotatingSence/>
+      
 
       <EffectComposer>
         <Bloom
-          intensity={0.6}
+          intensity={2.6}
           luminanceThreshold={0.4}
           luminanceSmoothing={0.8}
         />

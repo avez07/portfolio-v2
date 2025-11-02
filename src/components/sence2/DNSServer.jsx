@@ -1,21 +1,22 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from 'three'
+import {Text} from '@react-three/drei'
 const DNSServer = () => {
   const meshRef = useRef();
   const edgeRef = useRef();
   const size = 0.3
-  const position = [-1.5, 0.5, 9.5]
+  const position = [-1.5, 0.5, 9.2]
   const rotation = [0,0,0]
 
   // Rotate the crystal slowly
-//   useFrame(() => {
-//     if (meshRef.current.position) {
-//       meshRef.current.rotation.y -= 0.01
-//       edgeRef.current.rotation.y -= 0.01
+  useFrame(() => {
+    if (meshRef.current.position) {
+      meshRef.current.rotation.y -= 0.01
+      edgeRef.current.rotation.y -= 0.01
 
-//     }
-//   })
+    }
+  })
 
   return (
     <>
@@ -32,7 +33,7 @@ const DNSServer = () => {
           clearcoat={1}
           clearcoatRoughness={0.3}
           emissive="#00ffff"     // internal glow
-          emissiveIntensity={0.6}
+          emissiveIntensity={0.3}
         />
       </mesh>
 
@@ -41,6 +42,17 @@ const DNSServer = () => {
         <edgesGeometry args={[new THREE.SphereGeometry(size, 14, 11)]} />
         <lineBasicMaterial color="#00ffff" linewidth={1} />
       </lineSegments>
+      <Text
+                position={[-1.5, 1, 9.1]}
+                rotation={[0, 0, 0]}
+                fontSize={0.2}
+                fontWeight={600}
+                color="#00ffff"
+                anchorX="center"
+                anchorY="middle"
+            >
+                DNS SERVER
+            </Text>
     </>
   );
 }
